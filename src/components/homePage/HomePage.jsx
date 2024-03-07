@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -15,7 +15,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { BsList } from "react-icons/bs";
 import { BsChevronLeft } from "react-icons/bs";
-import { mainListItems } from './listItems';
+import MainListItems from './listItems'
 import Copyright from '../copyright/Copyright';
 
 const drawerWidth = 240;
@@ -65,6 +65,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const HomePage = () => {
+  const location = useLocation();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -117,7 +118,7 @@ const HomePage = () => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <MainListItems/>
           </List>
         </Drawer>
         <Box
@@ -137,7 +138,10 @@ const HomePage = () => {
             <Grid container spacing={3}>
               <Grid item xs={12} >
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', overflow:'scroll'}}>
+                  {location.pathname === '/dashboard' ?
+                  <Box>Welcome user!</Box> :
                   <Outlet/>
+                }
                 </Paper>
               </Grid>
             </Grid>
@@ -147,5 +151,6 @@ const HomePage = () => {
       </Box>
   )
 }
+
 
 export default HomePage

@@ -1,23 +1,41 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { Link as RLink } from 'react-router-dom';
+import { Link as RLink, useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Copyright from '../copyright/Copyright'
+import axios from "axios"
 
+const baseURL = "http://localhost:3000"
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      username: data.get('username'),
-      password: data.get('password'),
+
+    axios.post(`${baseURL}/signup`, 
+    {email: data.get('email'), 
+    username: data.get('username'),
+    password: data.get('password')})
+    .then(function (response) {
+      console.log(response);
+      alert('Profile created! Next step is logging in')
+      navigate('/signin')
+    })
+    .catch(function (error) {
+      console.log(error);
     });
+
+    // console.log({
+    //   email: data.get('email'),
+    //   username: data.get('username'),
+    //   password: data.get('password'),
+    // });
   };
 
   return (

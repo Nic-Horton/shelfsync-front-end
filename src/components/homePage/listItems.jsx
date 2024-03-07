@@ -6,10 +6,30 @@ import { BsGraphUp } from 'react-icons/bs';
 import { BsGearWideConnected } from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { logout } from '../../../auth';
+import axios from "axios"
 
-export const mainListItems = (
+
+const baseURL = "http://localhost:3000"
+
+
+const MainListItems = () => {
+
+	const signingOut = () => {
+		axios.post(`${baseURL}/signout`)
+		.then(function(response){
+			console.log(response);
+			logout();
+			window.location.href = '/';
+	
+		})
+		.catch(function (error) {
+			console.log(error);
+		})
+	}
+	return(
 	<>
-		<ListItemButton component={Link} to={''}>
+		<ListItemButton component={Link} to={'inventory'}>
 			<ListItemIcon>
 				<BsGrid1X2 />
 			</ListItemIcon>
@@ -27,11 +47,14 @@ export const mainListItems = (
 			</ListItemIcon>
 			<ListItemText primary="Settings" />
 		</ListItemButton>
-		<ListItemButton>
+		<ListItemButton onClick={() => signingOut()}>
 			<ListItemIcon>
 				<FiLogOut />
 			</ListItemIcon>
 			<ListItemText primary="Sign Out" />
 		</ListItemButton>
 	</>
-);
+	)
+}
+
+export default MainListItems

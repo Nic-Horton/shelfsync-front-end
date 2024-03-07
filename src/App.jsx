@@ -1,7 +1,6 @@
 // import {Routes, Route} from 'react-router-dom';
 import LandingPage from './components/landingPage/LandingPage';
 import HomePage from './components/homePage/HomePage';
-// import Navbar from './components/navbar/Navbar';
 import SignInPage from './components/signinPage/SignInPage';
 import SignUpPage from './components/signupPage/SignUpPage';
 import Inventory from './components/inventory/Inventory';
@@ -10,30 +9,38 @@ import Settings from './components/settings/Settings';
 import {
   createBrowserRouter,
   RouterProvider,
+  Navigate
 } from "react-router-dom";
+import { isAuthenticated } from '../auth';
+
+function PrivateRoute() {
+  return {
+    path: "/dashboard",
+    element: <HomePage/>,
+      children: [
+        {
+          path: "inventory",
+          element: <Inventory />,
+        },
+        {
+          path: "stats",
+          element: <Stats/>,
+        },
+        {
+          path: "settings",
+          element: <Settings />,
+        },
+        { path: "*", element: <Navigate to="/" replace /> },
+      ],
+    
+  }
+}
 
 const router = createBrowserRouter([
+  isAuthenticated() ? PrivateRoute() : {},
   {
     path: "/",
     element: <LandingPage/>,
-  },
-  {
-    path: "dashboard",
-    element: <HomePage/>,
-    children: [
-      {
-        path: "",
-        element: <Inventory />,
-      },
-      {
-        path: "stats",
-        element: <Stats/>,
-      },
-      {
-        path: "settings",
-        element: <Settings />,
-      },
-    ],
   },
   {
     path: "/signin",
@@ -43,20 +50,14 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <SignUpPage/>,
   },
+  { path: "*", element: <Navigate to="/signin" replace /> },
 ]);
 
 function App() {
 
   return (
     <>
-      {/* <Navbar/> */}
       <RouterProvider router={router} />
-      {/* <Routes>
-        <Route path="/" element={<LandingPage/>} />
-        <Route path="/home" element={<HomePage/>} />
-        <Route path="/signin" element={<SignInPage/>} />
-        <Route path="/signup" element={<SignUpPage/>} />
-      </Routes> */}
     </>
   )
 }

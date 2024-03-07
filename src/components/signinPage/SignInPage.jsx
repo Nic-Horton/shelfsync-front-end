@@ -7,15 +7,33 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Copyright from '../copyright/Copyright'
+import axios from "axios"
+import { login } from '../../../auth';
+
+const baseURL = "http://localhost:3000"
 
 const SignInPage = () => {
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
+
+     axios.post(`${baseURL}/signin`, 
+    {username: data.get('username'),
+    password: data.get('password')})
+    .then(function (response) {
+      console.log(response);
+      login(response.data.accessToken)
+      window.location.href = '/dashboard';
+    })
+    .catch(function (error) {
+      console.log(error);
     });
+
+    // console.log({
+    //   username: data.get('username'),
+    //   password: data.get('password'),
+    // });
   };
 
   return (
@@ -39,8 +57,8 @@ const SignInPage = () => {
               fullWidth
               id="username"
               label="Username"
-              name="current-username"
-              autoComplete="email"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
