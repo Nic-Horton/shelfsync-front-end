@@ -4,44 +4,35 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
-// Generate Order Data
-function createData(id, name, quantity, unit, category) {
-  return { id, name, quantity, unit, category };
+const baseURL = "http://localhost:3000"
+
+axios.defaults.withCredentials = true;
+
+const getInventory = () => {
+  return axios.get(`${baseURL}/pantryItems`)
+    .then((response) => {
+      console.log(response)
+      return response.data})
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
-const invRows = [
-  createData(
-    0,
-    'Bananas',
-    2,
-    '',
-    'Fruit',
-  ),
-  createData(
-    1,
-    'Cheerios',
-    2,
-    'Boxes',
-    'Cereal',
-  ),
-  createData(
-    2,
-    'Rice',
-    5,
-    'Boxes',
-    'Grains',
-  ),
-  createData(
-    3,
-    'Jello',
-    10,
-    'Packs',
-    'Snacks',
-  ),
-];
-
 const Inventory = () => {
+
+  const inventoryQuery = useQuery({
+    queryKey: ['pantryItems'],
+    queryFn: getInventory
+  })
+
+  if(inventoryQuery.isLoading) return <h1>Loading...</h1>
+  if(inventoryQuery.isError){
+    return <h1>Error: {inventoryQuery.error.message}</h1>
+  }
+
   return (
     <>
     <Box>Inventory</Box>
@@ -55,12 +46,12 @@ const Inventory = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {invRows.map((row) => (
-          <TableRow key={row.id}>
-            <TableCell>{row.name}</TableCell>
-            <TableCell>{row.quantity}</TableCell>
-            <TableCell>{row.unit}</TableCell>
-            <TableCell align="right">{row.category}</TableCell>
+        {inventoryQuery.data?.map((item) => (
+          <TableRow key={item.id}>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.quantity}</TableCell>
+            <TableCell>{item.unit === 'null' ? '' : item.unit}</TableCell>
+            <TableCell align="right">{item.category}</TableCell>
           </TableRow>
         ))}
       </TableBody>
