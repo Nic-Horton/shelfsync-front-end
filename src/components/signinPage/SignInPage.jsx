@@ -1,7 +1,7 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { Link as RLink } from 'react-router-dom';
+import { Link as RLink, useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -13,27 +13,20 @@ import { login } from '../../../auth';
 const baseURL = "http://localhost:3000"
 
 const SignInPage = () => {
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-     axios.post(`${baseURL}/signin`, 
-    {username: data.get('username'),
-    password: data.get('password')})
+    axios.post(`${baseURL}/signin`, {username: data.get('username'), password: data.get('password')})
     .then(function (response) {
       console.log(response);
-      login(response.data.accessToken)
-      window.location.href = '/dashboard';
+      login(response.data.token, navigate)
     })
     .catch(function (error) {
       console.log(error);
     });
-
-    // console.log({
-    //   username: data.get('username'),
-    //   password: data.get('password'),
-    // });
   };
 
   return (

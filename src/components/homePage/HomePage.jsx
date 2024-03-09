@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -139,7 +139,9 @@ const HomePage = () => {
               <Grid item xs={12} >
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', overflow:'scroll'}}>
                   {location.pathname === '/dashboard' ?
-                  <Box>Welcome user!</Box> :
+                  // <Box>Welcome user!</Box> 
+                  <Navigate to="/dashboard/inventory" replace />
+                  :
                   <Outlet/>
                 }
                 </Paper>

@@ -20,8 +20,6 @@ const MainListItems = () => {
 		.then(function(response){
 			console.log(response);
 			logout();
-			window.location.href = '/';
-	
 		})
 		.catch(function (error) {
 			console.log(error);

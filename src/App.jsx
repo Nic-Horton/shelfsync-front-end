@@ -9,35 +9,17 @@ import Settings from './components/settings/Settings';
 import {
   createBrowserRouter,
   RouterProvider,
-  Navigate
+  Navigate,
+  Outlet
 } from "react-router-dom";
 import { isAuthenticated } from '../auth';
 
-function PrivateRoute() {
-  return {
-    path: "/dashboard",
-    element: <HomePage/>,
-      children: [
-        {
-          path: "inventory",
-          element: <Inventory />,
-        },
-        {
-          path: "stats",
-          element: <Stats/>,
-        },
-        {
-          path: "settings",
-          element: <Settings />,
-        },
-        { path: "*", element: <Navigate to="/" replace /> },
-      ],
-    
-  }
+const PrivateRoute = () => {
+  const isAuth = isAuthenticated();
+  return isAuth ? <Outlet /> : <Navigate to="/signin" replace />;
 }
 
 const router = createBrowserRouter([
-  isAuthenticated() ? PrivateRoute() : {},
   {
     path: "/",
     element: <LandingPage/>,
@@ -49,6 +31,29 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUpPage/>,
+  },
+  {
+    element: <PrivateRoute/>,
+    children: [
+      {
+        path: "/dashboard",
+        element: <HomePage/>,
+        children: [
+          {
+            path: "inventory",
+            element: <Inventory />,
+          },
+          {
+            path: "stats",
+            element: <Stats/>,
+          },
+          {
+            path: "settings",
+            element: <Settings />,
+          },
+        ]
+      },
+    ]
   },
   { path: "*", element: <Navigate to="/signin" replace /> },
 ]);
