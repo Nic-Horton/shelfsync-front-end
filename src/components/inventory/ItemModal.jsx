@@ -7,13 +7,31 @@ import CategorySelect from './CategorySelect';
 import UnitSelect from './UnitSelect';
 import QuantityField from './QuantityField';
 import ItemNameField from './ItemNameField';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateItem } from '../../api/pantryItems';
 
 const ItemModal = ({open, handleClose, selectedRow}) => {
+  const queryClient = useQueryClient();
+  const itemUpdate = useMutation({
+    mutationFn: updateItem,
+    onSuccess: data => {
+      queryClient.setQueryData(["pantryItems", data.id], data)
+      queryClient.invalidateQueries(["pantryItems"], {exact: true})
+      handleClose()
+    }
+  })
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({name: data.get('name'), quantity: Number(data.get('quantity')), unit: data.get('unit'), category: data.get('category')})
+    itemUpdate.mutate({
+      id: selectedRow.id,
+      name: data.get('name'),
+      quantity: Number(data.get('quantity')),
+      unit: data.get('unit'),
+      category: data.get('category')
+    })
+    // console.log({name: data.get('name'), quantity: Number(data.get('quantity')), unit: data.get('unit'), category: data.get('category')})
   };
   
   return (

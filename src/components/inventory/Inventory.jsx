@@ -5,23 +5,10 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import ItemModal from './ItemModal';
+import { getInventory } from '../../api/pantryItems';
 
-const baseURL = "http://localhost:3000"
-
-axios.defaults.withCredentials = true;
-
-const getInventory = () => {
-  return axios.get(`${baseURL}/pantryItems`)
-    .then((response) => {
-      console.log(response)
-      return response.data})
-    .catch(function (error) {
-      console.log(error);
-    });
-}
 
 const Inventory = () => {
   const [open, setOpen] = useState(false); 
