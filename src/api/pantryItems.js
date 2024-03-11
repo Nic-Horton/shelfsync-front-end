@@ -49,3 +49,15 @@ export const createItem = async ({ name, quantity, unit, category }) => {
 			console.log(error);
 		});
 };
+
+export const deleteItem = async ({ id }) => {
+	return axios
+		.delete(`${baseURL}/pantryItems/${id}`)
+		.then((response) => {
+			console.log(response);
+			return response.data;
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+};

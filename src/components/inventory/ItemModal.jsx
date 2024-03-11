@@ -8,14 +8,26 @@ import UnitSelect from './UnitSelect';
 import QuantityField from './QuantityField';
 import ItemNameField from './ItemNameField';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateItem } from '../../api/pantryItems';
+import { deleteItem, updateItem } from '../../api/pantryItems';
+import { FaTrash } from "react-icons/fa";
+import IconButton from '@mui/material/IconButton';
 
 const ItemModal = ({open, handleClose, selectedRow}) => {
   const queryClient = useQueryClient();
+
   const itemUpdate = useMutation({
     mutationFn: updateItem,
     onSuccess: data => {
       queryClient.setQueryData(["pantryItems", data.id], data)
+      queryClient.invalidateQueries(["pantryItems"], {exact: true})
+      handleClose()
+    }
+  })
+
+  const itemDeletion = useMutation({
+    mutationFn: deleteItem,
+    onSuccess: () => {
+      queryClient.setQueryData(["pantryItems"])
       queryClient.invalidateQueries(["pantryItems"], {exact: true})
       handleClose()
     }
@@ -37,6 +49,12 @@ const ItemModal = ({open, handleClose, selectedRow}) => {
     })
     // console.log({name: data.get('name'), quantity: Number(data.get('quantity')), unit: itemUnit, category: data.get('category')})
   };
+
+  const handleDelete = () => {
+    itemDeletion.mutate({
+      id: selectedRow.id,
+    })
+  }
   
   return (
     <Dialog
@@ -47,10 +65,12 @@ const ItemModal = ({open, handleClose, selectedRow}) => {
           onSubmit: handleSubmit
         }}
       >
-        <DialogActions>
-          <Button color="error" >Delete Item</Button>
-        </DialogActions>
-        <DialogTitle>Update {selectedRow.name}</DialogTitle>
+        <DialogTitle sx={{display:'flex', justifyContent:'space-between', alignItems:'center', textAlign:'center'}}>
+          Update {selectedRow.name}
+          <IconButton color="error" onClick={handleDelete}>
+            <FaTrash />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <ItemNameField currentName={selectedRow.name}/>
           <QuantityField currentQuantity={selectedRow.quantity}/>
