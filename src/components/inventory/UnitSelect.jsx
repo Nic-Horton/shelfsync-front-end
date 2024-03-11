@@ -50,6 +50,8 @@ const UnitSelect = ({currentUnit}) => {
       value={unit}
       onChange={handleChange}
       fullWidth
+      required
+      helperText='Select "N/A" for items without units'
       SelectProps={{
         MenuProps: {
           PaperProps: {
