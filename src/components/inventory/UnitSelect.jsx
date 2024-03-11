@@ -47,7 +47,7 @@ const UnitSelect = ({currentUnit}) => {
       id="unit"
       name="unit"
       label="Unit"
-      value={currentUnit ? unit : ''}
+      value={unit}
       onChange={handleChange}
       fullWidth
       SelectProps={{
