@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 
 const units = [
-  '',
+  'N/A',
   'Grams (g)',
   'Kilograms (kg)',
   'Milligrams (mg)',
@@ -34,7 +34,7 @@ const units = [
 ];
 
 const UnitSelect = ({currentUnit}) => {
-  const [unit, setUnit] = useState(currentUnit ? currentUnit : '');
+  const [unit, setUnit] = useState(currentUnit ? currentUnit : 'N/A');
 
   const handleChange = (event) => {
     setUnit(event.target.value);

@@ -23,15 +23,19 @@ const ItemModal = ({open, handleClose, selectedRow}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    let itemUnit = '';
     const data = new FormData(event.currentTarget);
+    if (data.get('unit') !== 'N/A'){
+      itemUnit = data.get('unit');
+    }
     itemUpdate.mutate({
       id: selectedRow.id,
       name: data.get('name'),
       quantity: Number(data.get('quantity')),
-      unit: data.get('unit'),
+      unit: itemUnit,
       category: data.get('category')
     })
-    // console.log({name: data.get('name'), quantity: Number(data.get('quantity')), unit: data.get('unit'), category: data.get('category')})
+    // console.log({name: data.get('name'), quantity: Number(data.get('quantity')), unit: itemUnit, category: data.get('category')})
   };
   
   return (
