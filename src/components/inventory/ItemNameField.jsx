@@ -14,6 +14,7 @@ const ItemNameField = ({currentName}) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             autoComplete="none"
+            required
             autoFocus
           />
   )

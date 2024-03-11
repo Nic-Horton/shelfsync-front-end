@@ -1,17 +1,24 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
 import Table from '@mui/material/Table';
+import Typography from '@mui/material/Typography';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { FaRegPlusSquare } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query';
 import ItemModal from './ItemModal';
 import { getInventory } from '../../api/pantryItems';
+import NewItemModal from './NewItemModal';
 
 
 const Inventory = () => {
   const [open, setOpen] = useState(false); 
+  const [openForAdd, setOpenForAdd] = useState(false); 
   const [selectedRow, setSelectedRow] = useState({}); 
 
   const handleOpen = (item) => {
@@ -23,10 +30,13 @@ const Inventory = () => {
     setSelectedRow({});
   };
 
-  const handleClick = (item) => {
-    handleOpen(item);
+  const handleOpenForAdd = () => {
+    setOpenForAdd(true);
   };
 
+  const handleCloseForAdd = () => {
+    setOpenForAdd(false);
+  };
 
   const inventoryQuery = useQuery({
     queryKey: ['pantryItems'],
@@ -40,7 +50,28 @@ const Inventory = () => {
 
   return (
     <>
-    <Box>Inventory</Box>
+    {/* <Box>Inventory</Box> */}
+    <Box sx={{ width: '100%' }}>
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+      }}
+    >
+      <Typography
+        sx={{ flex: '1 1 100%' }}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        Pantry Inventory
+      </Typography>
+      <Tooltip title="Create New Item">
+        <IconButton onClick={() => handleOpenForAdd()}>
+          <FaRegPlusSquare />
+        </IconButton>
+      </Tooltip>
+    </Toolbar>
     <Table size="large">
       <TableHead>
         <TableRow>
@@ -52,7 +83,7 @@ const Inventory = () => {
       </TableHead>
       <TableBody>
         {inventoryQuery.data?.map((item) => (
-          <TableRow hover sx={{ cursor: 'pointer' }} onClick={() => handleClick(item)} key={item.id}>
+          <TableRow hover sx={{ cursor: 'pointer' }} onClick={() => handleOpen(item)} key={item.id}>
             <TableCell>{item.name}</TableCell>
             <TableCell>{item.quantity}</TableCell>
             <TableCell>{item.unit === 'null' ? '' : item.unit}</TableCell>
@@ -61,7 +92,9 @@ const Inventory = () => {
         ))}
       </TableBody>
     </Table>
+    </Box>
     <ItemModal open={open} handleClose={handleClose} selectedRow={selectedRow}/>
+    <NewItemModal open={openForAdd} handleClose={handleCloseForAdd} selectedRow={selectedRow}/>
   </>
   )
 }

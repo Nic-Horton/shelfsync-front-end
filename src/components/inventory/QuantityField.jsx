@@ -10,6 +10,7 @@ const QuantityField = ({currentQuantity}) => {
             fullWidth
             name="quantity"
             label="Quantity"
+            required
             InputProps={{
               inputProps: {
                 inputMode: 'numeric',

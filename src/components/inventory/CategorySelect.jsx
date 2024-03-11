@@ -34,6 +34,7 @@ const CategorySelect = ({currentCategory}) => {
       label="Category"
       value={category}
       onChange={handleChange}
+      required
       fullWidth
       SelectProps={{
         MenuProps: {
