@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import ItemModal from './ItemModal';
 
 const baseURL = "http://localhost:3000"
 
@@ -22,6 +24,22 @@ const getInventory = () => {
 }
 
 const Inventory = () => {
+  const [open, setOpen] = useState(false); 
+  const [selectedRow, setSelectedRow] = useState({}); 
+
+  const handleOpen = (item) => {
+    setSelectedRow(item)
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedRow({});
+  };
+
+  const handleClick = (item) => {
+    handleOpen(item);
+  };
+
 
   const inventoryQuery = useQuery({
     queryKey: ['pantryItems'],
@@ -47,7 +65,7 @@ const Inventory = () => {
       </TableHead>
       <TableBody>
         {inventoryQuery.data?.map((item) => (
-          <TableRow key={item.id}>
+          <TableRow hover sx={{ cursor: 'pointer' }} onClick={() => handleClick(item)} key={item.id}>
             <TableCell>{item.name}</TableCell>
             <TableCell>{item.quantity}</TableCell>
             <TableCell>{item.unit === 'null' ? '' : item.unit}</TableCell>
@@ -56,6 +74,7 @@ const Inventory = () => {
         ))}
       </TableBody>
     </Table>
+    <ItemModal open={open} handleClose={handleClose} selectedRow={selectedRow}/>
   </>
   )
 }
