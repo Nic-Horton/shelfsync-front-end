@@ -94,7 +94,7 @@ const Inventory = () => {
     </Table>
     </Box>
     <ItemModal open={open} handleClose={handleClose} selectedRow={selectedRow}/>
-    <NewItemModal open={openForAdd} handleClose={handleCloseForAdd} selectedRow={selectedRow}/>
+    <NewItemModal open={openForAdd} handleClose={handleCloseForAdd}/>
   </>
   )
 }

@@ -7,29 +7,34 @@ import CategorySelect from './CategorySelect';
 import UnitSelect from './UnitSelect';
 import QuantityField from './QuantityField';
 import ItemNameField from './ItemNameField';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createItem } from '../../api/pantryItems';
 
-const NewItemModal = ({open, handleClose, selectedRow}) => {
-  // const queryClient = useQueryClient();
-  // const itemUpdate = useMutation({
-  //   mutationFn: updateItem,
-  //   onSuccess: data => {
-  //     queryClient.setQueryData(["pantryItems", data.id], data)
-  //     queryClient.invalidateQueries(["pantryItems"], {exact: true})
-  //     handleClose()
-  //   }
-  // })
+const NewItemModal = ({open, handleClose}) => {
+  const queryClient = useQueryClient();
+  const itemCreation = useMutation({
+    mutationFn: createItem,
+    onSuccess: data => {
+      queryClient.setQueryData(["pantryItems", data.id], data)
+      queryClient.invalidateQueries(["pantryItems"], {exact: true})
+      handleClose()
+    }
+  })
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    let itemUnit = '';
     const data = new FormData(event.currentTarget);
-    // itemUpdate.mutate({
-    //   id: selectedRow.id,
-    //   name: data.get('name'),
-    //   quantity: Number(data.get('quantity')),
-    //   unit: data.get('unit'),
-    //   category: data.get('category')
-    // })
-    console.log({name: data.get('name'), quantity: Number(data.get('quantity')), unit: data.get('unit'), category: data.get('category')})
+    if (data.get('unit') !== 'N/A'){
+      itemUnit = data.get('unit');
+    }
+    itemCreation.mutate({
+      name: data.get('name'),
+      quantity: Number(data.get('quantity')),
+      unit: itemUnit,
+      category: data.get('category')
+    })
+    // console.log({name: data.get('name'), quantity: Number(data.get('quantity')), unit: data.get('unit'), category: data.get('category')})
   };
   
   return (
@@ -43,10 +48,10 @@ const NewItemModal = ({open, handleClose, selectedRow}) => {
       >
         <DialogTitle>Item Creation</DialogTitle>
         <DialogContent>
-          <ItemNameField currentName={selectedRow.name}/>
-          <QuantityField currentQuantity={selectedRow.quantity}/>
-          <UnitSelect currentUnit={selectedRow.unit}/>
-          <CategorySelect currentCategory={selectedRow.category}/>
+          <ItemNameField currentName=''/>
+          <QuantityField currentQuantity=''/>
+          <UnitSelect currentUnit=''/>
+          <CategorySelect currentCategory=''/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="warning">Cancel</Button>
