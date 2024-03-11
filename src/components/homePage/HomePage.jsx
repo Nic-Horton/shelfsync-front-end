@@ -17,6 +17,7 @@ import { BsList } from "react-icons/bs";
 import { BsChevronLeft } from "react-icons/bs";
 import MainListItems from './listItems'
 import Copyright from '../copyright/Copyright';
+import { useMediaQuery } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -65,8 +66,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const HomePage = () => {
+  const isMediumOrAbove = useMediaQuery('(min-width:600px)')
   const location = useLocation();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(isMediumOrAbove ? true : false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -77,7 +79,7 @@ const HomePage = () => {
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: '24px', 
             }}
           >
             <IconButton
