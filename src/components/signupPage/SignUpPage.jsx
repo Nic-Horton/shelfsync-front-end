@@ -6,8 +6,10 @@ import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Copyright from '../copyright/Copyright'
-import axios from "axios"
+import Copyright from '../copyright/Copyright';
+import axios from "axios";
+import SvgIcon from '@mui/material/SvgIcon';
+import { FaUserPlus } from "react-icons/fa";
 
 const baseURL = "http://localhost:3000"
 
@@ -49,6 +51,9 @@ const SignUpPage = () => {
             alignItems: 'center',
           }}
         >
+          <SvgIcon>
+            <FaUserPlus />
+          </SvgIcon>
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>

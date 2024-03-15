@@ -7,8 +7,10 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Copyright from '../copyright/Copyright'
+import { FaLock } from "react-icons/fa";
 import axios from "axios"
 import { login } from '../../../auth';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const baseURL = "http://localhost:3000"
 
@@ -40,6 +42,9 @@ const SignInPage = () => {
             alignItems: 'center',
           }}
         >
+          <SvgIcon >
+            <FaLock/>
+          </SvgIcon>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
