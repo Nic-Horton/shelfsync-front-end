@@ -1,4 +1,3 @@
-// import {Routes, Route} from 'react-router-dom';
 import LandingPage from './components/landingPage/LandingPage';
 import HomePage from './components/homePage/HomePage';
 import SignInPage from './components/signinPage/SignInPage';

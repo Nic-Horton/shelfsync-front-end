@@ -14,9 +14,11 @@ import { useQuery } from '@tanstack/react-query';
 import ItemModal from './ItemModal';
 import { getInventory } from '../../api/pantryItems';
 import NewItemModal from './NewItemModal';
+import SearchInput from './SearchInput';
 
 
 const Inventory = () => {
+  const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false); 
   const [openForAdd, setOpenForAdd] = useState(false); 
   const [selectedRow, setSelectedRow] = useState({}); 
@@ -48,9 +50,14 @@ const Inventory = () => {
     return <h1>Error: {inventoryQuery.error.message}</h1>
   }
 
+  const filteredItems = searchTerm ? inventoryQuery.data.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    ||
+    item.category.toLowerCase().includes(searchTerm.toLowerCase())
+  ) : inventoryQuery.data;
+
   return (
     <>
-    {/* <Box>Inventory</Box> */}
     <Box sx={{ width: '100%' }}>
     <Toolbar
       sx={{
@@ -72,6 +79,9 @@ const Inventory = () => {
         </IconButton>
       </Tooltip>
     </Toolbar>
+    <Toolbar>
+      <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+    </Toolbar>
     <Table size="large">
       <TableHead>
         <TableRow>
@@ -82,7 +92,7 @@ const Inventory = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {inventoryQuery.data?.map((item) => (
+        {filteredItems?.map((item) => (
           <TableRow hover sx={{ cursor: 'pointer' }} onClick={() => handleOpen(item)} key={item.id}>
             <TableCell>{item.name}</TableCell>
             <TableCell>{item.quantity}</TableCell>

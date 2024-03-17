@@ -11,7 +11,7 @@ export default function Hero() {
     <HeroLayout
       sxBackground={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundColor: '#748386',
+        backgroundColor: '#242424',
         backgroundPosition: '50%',
         backgroundSize: "cover",
       }}
