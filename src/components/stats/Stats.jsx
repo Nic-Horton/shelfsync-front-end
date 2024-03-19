@@ -3,9 +3,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState,useEffect } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { useTheme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 
@@ -14,7 +11,6 @@ const Stats = () => {
   const isLgScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const isMdScreen = useMediaQuery(theme.breakpoints.down('md'));
   const isSmScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  // const [isHidden, setIsHidden] = useState(false);
   const queryClient = useQueryClient();
   const pantryItems = queryClient.getQueryData(["pantryItems"]);
   const [categoryData, setCategoryData] = useState([]);
@@ -67,15 +63,6 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF3333'
       </Typography>
       </Toolbar>
     
-      {/* <Stack> 
-      <FormControlLabel
-        checked={isHidden}
-        control={
-          <Checkbox onChange={(event) => setIsHidden(event.target.checked)} />
-        }
-        label="hide the legend"
-        labelPlacement="end"
-      /> */}
     <PieChart
       colors={COLORS}
       series={[
@@ -90,7 +77,6 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF3333'
       margin={{ right: 250 }}
       slotProps={{ 
         legend: { 
-          // hidden: isHidden,
           direction: 'column',
           position: { vertical: 'middle', horizontal: 'right' },
           itemMarkWidth: 20,
@@ -100,7 +86,6 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF3333'
       height={400}
       width={isSmScreen? 500 : isMdScreen ? 600 : isLgScreen? 800 :1000}
     />
-     {/* </Stack> */}
     </>
   )
 }
