@@ -9,20 +9,25 @@ import Typography from '@mui/material/Typography';
 import Copyright from '../copyright/Copyright';
 import axios from "axios";
 import SvgIcon from '@mui/material/SvgIcon';
-import { FaUserPlus } from "react-icons/fa";
+import { FaUserPlus, FaEye, FaEyeSlash } from "react-icons/fa";
+import { IconButton, InputAdornment } from '@mui/material';
+import { useState } from 'react';
+
 
 const baseURL = "http://localhost:3000"
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
     axios.post(`${baseURL}/signup`, 
-    {email: data.get('email'), 
-    username: data.get('username'),
+    {username: data.get('username'),
     password: data.get('password')})
     .then(function (response) {
       console.log(response);
@@ -55,26 +60,15 @@ const SignUpPage = () => {
             <FaUserPlus />
           </SvgIcon>
           <Typography component="h1" variant="h5">
-            Sign Up
+            Create an Account
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              type='email'
-              autoComplete="email"
-              autoFocus
-            />
             <TextField
               margin="normal"
               required
               fullWidth
               id="username"
-              label="Username"
+              label="Enter your Username"
               name="username"
               autoFocus
               autoComplete="new-user-name"
@@ -84,10 +78,21 @@ const SignUpPage = () => {
               required
               fullWidth
               name="password"
-              label="Password"
-              type="password"
+              label="Enter your Password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="new-password"
+              InputProps={{
+                endAdornment: 
+                 <InputAdornment position="end">
+                   <IconButton
+                     aria-label="toggle password visibility"
+                     onClick={handleClickShowPassword}
+                   >
+                     {showPassword ? <FaEyeSlash /> : <FaEye />}
+                   </IconButton>
+                 </InputAdornment>
+             }}
             />
             <Button
               type="submit"
