@@ -10,7 +10,8 @@ import Copyright from '../copyright/Copyright';
 import axios from "axios";
 import SvgIcon from '@mui/material/SvgIcon';
 import { FaUserPlus, FaEye, FaEyeSlash } from "react-icons/fa";
-import { IconButton, InputAdornment } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
 
 

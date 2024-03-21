@@ -7,15 +7,21 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Copyright from '../copyright/Copyright'
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios"
 import { login } from '../../../auth';
 import SvgIcon from '@mui/material/SvgIcon';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import { useState } from 'react';
 
 const baseURL = "http://localhost:3000"
 
 const SignInPage = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -65,9 +71,20 @@ const SignInPage = () => {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
+              InputProps={{
+                endAdornment: 
+                 <InputAdornment position="end">
+                   <IconButton
+                     aria-label="toggle password visibility"
+                     onClick={handleClickShowPassword}
+                   >
+                     {showPassword ? <FaEyeSlash /> : <FaEye />}
+                   </IconButton>
+                 </InputAdornment>
+             }}
             />
             <Button
               type="submit"
