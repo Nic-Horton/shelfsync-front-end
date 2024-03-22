@@ -7,43 +7,40 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Copyright from '../copyright/Copyright';
-import axios from "axios";
 import SvgIcon from '@mui/material/SvgIcon';
 import { FaUserPlus, FaEye, FaEyeSlash } from "react-icons/fa";
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
-
-
-const baseURL = "http://localhost:3000"
+import { createProfile } from '../../api/user';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    axios.post(`${baseURL}/signup`, 
-    {username: data.get('username'),
-    password: data.get('password')})
-    .then(function (response) {
-      console.log(response);
-      alert('Profile created! Next step is logging in')
-      navigate('/signin')
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    if (data.get('password') === data.get('confirmPassword')) {
+      createProfile({username: data.get('username'),password:data.get('password')},navigate)
+    } else {
+      setPasswordsMatch(false);
+    }
+  };
 
-    // console.log({
-    //   email: data.get('email'),
-    //   username: data.get('username'),
-    //   password: data.get('password'),
-    // });
+  const handlePasswordChange = (event) => {
+    if(document.getElementById('confirmPassword').value || (event.target.value === document.getElementById('confirmPassword').value)){
+      setPasswordsMatch(event.target.value === document.getElementById('confirmPassword').value);
+    }
+  };
+  const handleConfirmPasswordChange = (event) => {
+    setPasswordsMatch(event.target.value === document.getElementById('password').value);
   };
 
   return (
@@ -83,6 +80,7 @@ const SignUpPage = () => {
               type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="new-password"
+              onChange={handlePasswordChange}
               InputProps={{
                 endAdornment: 
                  <InputAdornment position="end">
@@ -95,6 +93,29 @@ const SignUpPage = () => {
                  </InputAdornment>
              }}
             />
+            <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirm Password"
+            type={showConfirmPassword ? 'text' : 'password'}
+            id="confirmPassword"
+            error={!passwordsMatch} 
+            helperText={!passwordsMatch && "Passwords don't match"}
+            onChange={handleConfirmPasswordChange}
+            InputProps={{
+              endAdornment: 
+               <InputAdornment position="end">
+                 <IconButton
+                   aria-label="toggle password visibility"
+                   onClick={handleClickShowConfirmPassword}
+                 >
+                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                 </IconButton>
+               </InputAdornment>
+           }}
+          />
             <Button
               type="submit"
               fullWidth
