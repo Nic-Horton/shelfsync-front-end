@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import LandingPage from './components/landingPage/LandingPage';
 import HomePage from './components/homePage/HomePage';
 import SignInPage from './components/signinPage/SignInPage';
@@ -12,6 +13,9 @@ import {
   Outlet
 } from "react-router-dom";
 import { isAuthenticated } from '../auth';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const PrivateRoute = () => {
   const isAuth = isAuthenticated();
@@ -57,11 +61,32 @@ const router = createBrowserRouter([
   { path: "*", element: <Navigate to="/signin" replace /> },
 ]);
 
+
 function App() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+          primary: {
+            main: '#41c9df',
+          },
+          secondary: {
+            main: '#df5941',
+          },
+        },
+      }),
+    [prefersDarkMode],
+  )
 
   return (
     <>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </>
   )
 }
