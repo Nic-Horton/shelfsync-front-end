@@ -8,12 +8,23 @@ import { FiLogOut } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { logout } from '../../../auth';
 import axios from "axios"
-
+import { useState } from 'react';
 
 const baseURL = "http://localhost:3000"
 
+const tabItems =[
+	{name: "Inventory", path:'inventory', icon: <BsGrid1X2 />},
+	{name: "Statistics", path:'stats', icon: <BsGraphUp />},
+	{name: "Settings", path:'settings', icon: <BsGearWideConnected />}
+] 
 
 const MainListItems = () => {
+	const [selectedItem, setSelectedItem] = useState('Inventory');
+
+  const handleItemClick = (itemName) => {
+    setSelectedItem(itemName);
+  };
+
 
 	const signingOut = () => {
 		axios.post(`${baseURL}/signout`)
@@ -27,29 +38,22 @@ const MainListItems = () => {
 	}
 	return(
 	<>
-		<ListItemButton component={Link} to={'inventory'}>
+		{tabItems.map((item)=>{
+			return (
+			<ListItemButton key={item.name} component={Link} to={item.path} onClick={()=>handleItemClick(item.name)} selected={selectedItem === item.name} >
+				<ListItemIcon>
+					{item.icon}
+				</ListItemIcon>
+				<ListItemText primary={item.name} />
+			</ListItemButton>
+			)
+		})}
+
+		<ListItemButton  onClick={() => signingOut()}>
 			<ListItemIcon>
-				<BsGrid1X2 />
+				<FiLogOut color='red'/>
 			</ListItemIcon>
-			<ListItemText primary="Inventory" />
-		</ListItemButton>
-		<ListItemButton component={Link} to={'stats'}>
-			<ListItemIcon>
-				<BsGraphUp />
-			</ListItemIcon>
-			<ListItemText primary="Statistics" />
-		</ListItemButton>
-		<ListItemButton component={Link} to={'settings'}>
-			<ListItemIcon>
-				<BsGearWideConnected />
-			</ListItemIcon>
-			<ListItemText primary="Settings" />
-		</ListItemButton>
-		<ListItemButton onClick={() => signingOut()}>
-			<ListItemIcon>
-				<FiLogOut />
-			</ListItemIcon>
-			<ListItemText primary="Sign Out" />
+			<ListItemText sx={{color:'red'}} primary="Sign Out" />
 		</ListItemButton>
 	</>
 	)
