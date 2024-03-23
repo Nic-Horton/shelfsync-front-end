@@ -62,7 +62,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF3333'
         Statistics
       </Typography>
       </Toolbar>
-    
+    {pantryItems.length === 0 ? <Typography variant='h5' align='center'>No items currently available for stats</Typography> :
     <PieChart
       colors={COLORS}
       series={[
@@ -86,6 +86,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF3333'
       height={400}
       width={isSmScreen? 500 : isMdScreen ? 600 : isLgScreen? 800 :1000}
     />
+    } 
     </>
   )
 }

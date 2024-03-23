@@ -141,6 +141,7 @@ const Inventory = () => {
     <Toolbar sx={{display:'flex', justifyContent:'center' }}>
       <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
     </Toolbar>
+    {sortedItems.length === 0 ? <Typography variant='h5' align='center'>No Items Found</Typography> :
     <Table size="large">
       <TableHead>
         <TableRow>
@@ -166,7 +167,7 @@ const Inventory = () => {
               ))}
         </TableRow>
       </TableHead>
-      {sortedItems.length === 0 ? <Typography variant='h5'>No Items Found</Typography> :
+      
       <TableBody>
         {sortedItems?.map((item) => (
           <TableRow hover sx={{ cursor: 'pointer' }} onClick={() => handleOpen(item)} key={item.id}>
@@ -177,8 +178,8 @@ const Inventory = () => {
           </TableRow>
         ))}
       </TableBody>
-}
     </Table>
+    }
     </Box>
     <ItemModal open={open} handleClose={handleClose} selectedRow={selectedRow}/>
     <NewItemModal open={openForAdd} handleClose={handleCloseForAdd}/>
