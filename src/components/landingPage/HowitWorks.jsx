@@ -8,6 +8,7 @@ import { FaUserCheck } from "react-icons/fa6";
 import { FaRegSquarePlus } from "react-icons/fa6";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import { isAuthenticated } from '../../../auth';
 
 
 const item = {
@@ -81,7 +82,7 @@ function HowItWorks() {
             </Grid>
           </Grid>
         </Box>
-        <Button component={Link} to='signin' variant="contained" size="large" sx={{width: 'fit-content', alignSelf:'center', p:'10px'}}> 
+        <Button component={Link} to={isAuthenticated ? 'dashboard' : 'signin'} variant="contained" size="large" sx={{width: 'fit-content', alignSelf:'center', p:'10px'}}> 
           Get Started
         </Button>
       </Container>

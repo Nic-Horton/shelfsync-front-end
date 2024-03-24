@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import HeroLayout from './HeroLayout';
 import { Link } from 'react-router-dom';
+import { isAuthenticated } from '../../../auth';
+
 
 const backgroundImage ='../src/assets/strawberries.jpg';
 
@@ -32,7 +34,7 @@ export default function Hero() {
       > 
       Where your pantry syncs its shelf.
       </Typography>
-      <Button component={Link} to='signin' variant="contained" size="large" sx={{width: 'fit-content', alignSelf:'center', p:'10px'}}> 
+      <Button component={Link} to={isAuthenticated ? 'dashboard' : 'signin'} variant="contained" size="large" sx={{width: 'fit-content', alignSelf:'center', p:'10px'}}> 
         Get Started
       </Button>
     </HeroLayout>
