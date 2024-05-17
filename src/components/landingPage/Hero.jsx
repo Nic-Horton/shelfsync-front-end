@@ -2,7 +2,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import HeroLayout from './HeroLayout';
 import { Link } from 'react-router-dom';
-import { isAuthenticated } from '../../../auth';
 
 const backgroundImage = '../src/assets/strawberries.jpg';
 
@@ -41,7 +40,7 @@ export default function Hero() {
 			</Typography>
 			<Button
 				component={Link}
-				to={isAuthenticated ? 'dashboard' : 'signin'}
+				to={'signin'}
 				variant="contained"
 				size="large"
 				sx={{
